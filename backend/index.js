@@ -1,76 +1,28 @@
+import "./config.js"; // Load environment variables early
+import dotenv from "dotenv";
+dotenv.config(); // Load environment variables at the very top
+
 import express from "express";
-import mysql from "mysql2";
 import cors from "cors";
+import db from "./db.js";
+import bookRoutes from "./routes/books.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "2Paidman",
-  database: "test",
-});
+app.use("/books", bookRoutes);
 
 app.get("/", (req, res) => {
   res.json("hello");
 });
 
-app.get("/books", (req, res) => {
-  const q = "SELECT * FROM books";
-  db.query(q, (err, data) => {
-    if (err) {
-      console.log(err);
-      return res.json(err);
-    }
-    return res.json(data);
-  });
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!" });
 });
 
-app.post("/books", (req, res) => {
-  const q = "INSERT INTO books(`title`, `desc`, `price`, `cover`) VALUES (?)";
-
-  const values = [
-    req.body.title,
-    req.body.desc,
-    req.body.price,
-    req.body.cover,
-  ];
-
-  db.query(q, [values], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.delete("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  const q = " DELETE FROM books WHERE id = ? ";
-
-  db.query(q, [bookId], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.put("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  const q = "UPDATE books SET `title`= ?, `desc`= ?, `price`= ?, `cover`= ? WHERE id = ?";
-
-  const values = [
-    req.body.title,
-    req.body.desc,
-    req.body.price,
-    req.body.cover,
-  ];
-
-  db.query(q, [...values,bookId], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.listen(8800, () => {
-  console.log("Connected to backend at http://localhost:8800");
+app.listen(process.env.PORT || 8800, () => {
+  console.log(`Connected to backend at http://localhost:${process.env.PORT || 8800}`);
 });
