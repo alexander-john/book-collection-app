@@ -1,27 +1,10 @@
 import express from "express";
-import db from "../db.js";
+import { getBooks, addBook } from "../controllers/bookController.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
-  try {
-    const [data] = await db.promise().query("SELECT * FROM books");
-    res.json(data);
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.post("/", async (req, res, next) => {
-  try {
-    const q = "INSERT INTO books(`title`, `desc`, `price`, `cover`) VALUES (?)";
-    const values = [req.body.title, req.body.desc, req.body.price, req.body.cover];
-    const [data] = await db.promise().query(q, [values]);
-    res.json(data);
-  } catch (err) {
-    next(err);
-  }
-});
+router.get("/", getBooks);
+router.post("/", addBook);
 
 router.delete("/:id", async (req, res, next) => {
   try {
