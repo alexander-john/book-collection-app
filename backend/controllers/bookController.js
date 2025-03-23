@@ -8,8 +8,8 @@ export const getBooks = (req, res, next) => {
 };
 
 export const addBook = (req, res, next) => {
-  const { title, author } = req.body;
-  db.query("INSERT INTO books (title, author) VALUES (?, ?)", [title, author], (err) => {
+  const { title, desc, price } = req.body;
+  db.query("INSERT INTO books (title, `desc`, `price`) VALUES (?, ?, ?)", [title, desc, price], (err) => { // Updated query
     if (err) return next(err);
     res.status(201).json({ message: "Book added successfully" });
   });
