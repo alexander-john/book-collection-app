@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { updateBook } from "../booksAPI";
+import { InputField } from "../components/InputField";
 
 const Update = () => {
     const [book, setBook] = useState({
@@ -9,7 +10,7 @@ const Update = () => {
         price: 0,
         cover: "",
     });
-    
+
     const [error, setError] = useState(false);
 
     const location = useLocation();
@@ -33,34 +34,28 @@ const Update = () => {
         }
     };
 
+    const bookFields = [
+        { type: "text", placeholder: "Book title", name: "title" },
+        {
+            type: "text",
+            placeholder: "Book desc",
+            name: "desc",
+            isTextArea: true,
+        },
+        { type: "number", placeholder: "Book price", name: "price" },
+        { type: "text", placeholder: "Book cover", name: "cover" },
+    ];
+
     return (
         <div className="form">
             <h1>Update the Book</h1>
-            <input
-                type="text"
-                placeholder="Book title"
-                name="title"
-                onChange={handleChange}
-            />
-            <textarea
-                rows={5}
-                type="text"
-                placeholder="Book desc"
-                name="desc"
-                onChange={handleChange}
-            />
-            <input
-                type="number"
-                placeholder="Book price"
-                name="price"
-                onChange={handleChange}
-            />
-            <input
-                type="text"
-                placeholder="Book cover"
-                name="cover"
-                onChange={handleChange}
-            />
+            {bookFields.map((field) => (
+                <InputField
+                    key={field.name}
+                    field={field}
+                    onChange={handleChange}
+                />
+            ))}
             <button onClick={handleClick}>Update</button>
             {error && "Something went wrong!"}
             <Link to="/">See all books</Link>
