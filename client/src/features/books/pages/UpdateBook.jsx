@@ -49,6 +49,7 @@ const Update = () => {
     return (
         <div className="form">
             <h1>Update the Book</h1>
+
             {bookFields.map((field) => (
                 <InputField
                     key={field.name}
@@ -56,8 +57,11 @@ const Update = () => {
                     onChange={handleChange}
                 />
             ))}
+
             <button onClick={handleClick}>Update</button>
+
             {error && "Something went wrong!"}
+            
             <Link to="/">See all books</Link>
         </div>
     );
