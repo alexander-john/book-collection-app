@@ -7,5 +7,5 @@ export const createBook = (bookData) => {
 };
 
 export const updateBook = async (bookId, bookData) => {
-    return await axios.put(`${BASE_URL}/${bookId}`, bookData);
+    return await axios.put(`${BASE_URL}/books/${bookId}`, bookData);
 };
