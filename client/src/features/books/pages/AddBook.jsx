@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createBook } from "./booksAPI";
+import { InputField } from "../components/InputField";
 
 const Add = () => {
     const [book, setBook] = useState({
@@ -45,25 +46,13 @@ const Add = () => {
         <div className="form">
             <h1>Add New Book</h1>
 
-            {bookFields.map((field) =>
-                field.isTextArea ? (
-                    <textarea
-                        key={field.name}
-                        rows={5}
-                        placeholder={field.placeholder}
-                        name={field.name}
-                        onChange={handleChange}
-                    />
-                ) : (
-                    <input
-                        key={field.name}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        name={field.name}
-                        onChange={handleChange}
-                    />
-                )
-            )}
+            {bookFields.map((field) => (
+                <InputField
+                    key={field.name}
+                    field={field}
+                    onChange={handleChange}
+                />
+            ))}
 
             <button onClick={handleClick}>Add</button>
             {error && "Something went wrong!"}
