@@ -8,7 +8,7 @@ const Add = () => {
     const [book, setBook] = useState({
         title: "",
         desc: "",
-        price: null,
+        price: 0, // Default to 0
         cover: "",
     });
     const [error, setError] = useState(false);
