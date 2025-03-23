@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { updateBook } from "../booksAPI";
 
 const Update = () => {
   const [book, setBook] = useState({
@@ -24,7 +24,7 @@ const Update = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:8800/books/${bookId}`, book);
+      await updateBook(bookId, book);
       navigate("/");
     } catch (err) {
       console.log(err);
